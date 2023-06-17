@@ -17,10 +17,10 @@
                         <a class="nav-link disabled">Disabled</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a href="/registration_form.php" class="nav-link">Реєстрація</a></li>
+                    <li class="nav-item"><a href="/login.php" class="nav-link">Вхід</a></li>
+                </ul>
             </div>
         </div>
     </nav>

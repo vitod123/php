@@ -1,92 +1,66 @@
-<section class="vh-100 gradient-custom">
-    <div class="container py-5 h-100">
-        <div class="row justify-content-center align-items-center h-100">
-            <div class="col-12 col-lg-9 col-xl-7">
-                <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                    <div class="card-body p-4 p-md-5">
-                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
-                        <form>
+<?php
+$name = "";
+$email = "";
+$password = "";
+$phone = "";
+$image = "";
 
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["name"]))
+        $name = $_POST["name"];
+    if (isset($_POST["email"]))
+        $email = $_POST["email"];
+    if (isset($_POST["password"]))
+        $password = $_POST["password"];
+    if (isset($_POST["phone"]))
+        $phone = $_POST["phone"];
+    if (isset($_POST["image"]))
+        $image = $_POST["image"];
+    if (!empty($name) && !empty($email) && !empty($password) && !empty($phone) && !empty($image)){
+        try {
+            $dbh = new PDO('mysql:host=localhost;dbname=pv125', "root", "123456");
+            $sql = "INSERT INTO users (name, image, phone, password, email) VALUES(?, ?, ?, ?, ?);";
+            $sth = $dbh->prepare($sql);
+            $sth->execute([$name,$image,$phone, $password, $email]);
+            $dbh = null;
+            header('Location: /');
+            exit;
+        } catch (PDOException $e) {
+            print "Error!: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
+}
+?>
 
-                                    <div class="form-outline">
-                                        <input type="text" id="firstName" class="form-control form-control-lg" />
-                                        <label class="form-label" for="firstName">First Name</label>
-                                    </div>
+<?php include $_SERVER["DOCUMENT_ROOT"] . "/head.php"; ?>
 
-                                </div>
-                                <div class="col-md-6 mb-4">
-
-                                    <div class="form-outline">
-                                        <input type="text" id="lastName" class="form-control form-control-lg" />
-                                        <label class="form-label" for="lastName">Last Name</label>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-4 d-flex align-items-center">
-
-                                    <div class="form-outline datepicker w-100">
-                                        <input type="tel" class="form-control form-control-lg" id="birthdayDate" />
-                                        <label for="birthdayDate" class="form-label">Phone Number</label>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 mb-4">
-
-                                    <h6 class="mb-2 pb-1">Gender: </h6>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
-                                               value="option1" checked />
-                                        <label class="form-check-label" for="femaleGender">Female</label>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
-                                               value="option2" />
-                                        <label class="form-check-label" for="maleGender">Male</label>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="otherGender"
-                                               value="option3" />
-                                        <label class="form-check-label" for="otherGender">Other</label>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-4 pb-2">
-
-                                    <div class="form-outline">
-                                        <input type="email" id="emailAddress" class="form-control form-control-lg" />
-                                        <label class="form-label" for="emailAddress">Email</label>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 mb-4 pb-2">
-
-                                    <div class="form-outline">
-                                        <input type="password" id="phoneNumber" class="form-control form-control-lg" />
-                                        <label class="form-label" for="phoneNumber">Password</label>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="mt-4 pt-2">
-                                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
+    <div class="container">
+        <h1 class="text-center">Реєстрація</h1>
+        <form class="row col-md-8 offset-md-2 g-3" method="post">
+            <div class="col-md-6">
+                <label for="name" class="form-label">Ім'я</label>
+                <input type="text" class="form-control" id="name" name="name" value="<?php echo $name; ?>">
             </div>
-        </div>
+            <div class="col-md-6">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" value="<?php echo $password; ?>">
+            </div>
+            <div class="col-12">
+                <label for="email" class="form-label">Електронна пошта</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="itstep@gmail.com" value="<?php echo $email; ?>">
+            </div>
+            <div class="col-12">
+                <label for="phone" class="form-label">Телефон</label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="38(067)43 24 344" value="<?php echo $phone; ?>">
+            </div>
+            <div class="col-12">
+                <label for="image" class="form-label">Шлях до малюнка</label>
+                <input type="text" class="form-control" id="image" name="image" placeholder="" value="<?php echo $image; ?>">
+            </div>
+            <a href="/" class="btn btn-dark col-6">На головну</a>
+            <button type="submit" class="btn btn-primary col-6">Реєстрація</button>
+        </form>
     </div>
-</section>
+
+<?php include $_SERVER["DOCUMENT_ROOT"] . "/footer.php"; ?>
