@@ -42,19 +42,29 @@
 <?php include $_SERVER["DOCUMENT_ROOT"] . "/modals/deleteModal.php"; ?>
 
 <script src="/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script>
-        window.addEventListener("load", function() {
-            const btns = document.querySelectorAll("[data-delete]");
-            const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
-            for (i=0; i<btns.length; i++) {
-                btns[i].onclick=function(e) {
-                    e.preventDefault();
-                    console.log("Ви нажали хрест");
-                    deleteModal.show();
-                }
+<script>
+    window.addEventListener("load", function() {
+        const btns = document.querySelectorAll("[data-delete]");
+        let hrefDelete = "";
+        const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+        for (i=0; i<btns.length; i++) {
+            btns[i].onclick=function(e) {
+                e.preventDefault();
+                hrefDelete = this.href;
+                console.log("Ви нажали хрест");
+                deleteModal.show();
             }
-        });
-    </script>
+        }
+        document.getElementById("modalDeleteYes").onclick = function (){
+            console.log("DELETE URL = ", hrefDelete);
+            axios.post(hrefDelete).then(resp => {
+               deleteModal.hide();
+               location.reload();
+            });
+        }
+    });
+</script>
 
 <?php include $_SERVER["DOCUMENT_ROOT"] . "/footer.php"; ?>
